@@ -10,10 +10,10 @@
 package swagger
 
 import (
-	"fmt"
+//	"fmt"
 	"net/http"
 	"strings"
-
+	"crypto/subtle"
 	"github.com/gorilla/mux"
 )
 
@@ -44,13 +44,16 @@ func NewRouter() *mux.Router {
 }
 
 func Index(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello World!")
+//	fmt.Fprintf(w, "Hello World!\n")
 	user, pass, ok := r.BasicAuth()
+	username, password, realm := "admin", "123456", "Please enter your username and password for this site"
+
 	if !ok || subtle.ConstantTimeCompare([]byte(user), []byte(username)) != 1 || subtle.ConstantTimeCompare([]byte(pass), []byte(password)) != 1 {
 		w.Header().Set("WWW-Authenticate", `Basic realm="`+realm+`"`)
 		w.WriteHeader(401)
 		w.Write([]byte("Unauthorised.\n"))
 		return
+	}
 }
 
 var routes = Routes{
