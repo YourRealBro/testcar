@@ -1,7 +1,7 @@
 FROM golang:latest as builder
 WORKDIR /app
 RUN go get -v -u github.com/gorilla/mux
-COPY . .
+COPY ./testcar-server/ .
 RUN CGO_ENABLED=0 go build main.go
 
 FROM alpine:latest
