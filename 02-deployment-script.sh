@@ -16,7 +16,6 @@ aws ec2 run-instances --image-id ami-0d9ef3d936a8fa1c6 --count 1 --instance-type
 INSTANCE_ID=$(grep InstanceId instance.txt | awk '{print $2}' | tr -d ',\"')
 #aws ec2 describe-instances --instance-ids $INSTANCE_ID --query 'Reservations[*].Instances[*].PublicIpAddress' --output text
 INST_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text)
-ssh -o StrictHostKeyChecking=no -i testcarkeys.pem ec2-user@${INST_IP}
 
 scp -o StrictHostKeyChecking=no -i testcarkeys.pem 03-deploy-on-vm.sh ec2-user@${INST_IP}:/home/ec2-user/
 scp -r -o StrictHostKeyChecking=no -i testcarkeys.pem ~/.aws ec2-user@${INST_IP}:/home/ec2-user/
